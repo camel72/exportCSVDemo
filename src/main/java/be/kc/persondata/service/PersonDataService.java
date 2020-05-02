@@ -24,12 +24,13 @@ public class PersonDataService {
         return personDataRepository.findAll();
     }
 
-    public void uploadPersonData(List<PersonData> personDataList) {
+    public List<PersonData> uploadPersonData(List<PersonData> personDataList) {
         personDataRepository.saveAll(personDataList);
+        return personDataList;
     }
 
-    public void uploadPersonDataFromScratch() throws Exception {
+    public List<PersonData> uploadPersonDataFromScratch() throws Exception {
         List<PersonData> personDatas = personDataCSVRepository.getPersonDatas();
-        uploadPersonData(personDatas);
+        return uploadPersonData(personDatas);
     }
 }

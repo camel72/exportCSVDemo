@@ -30,6 +30,7 @@ public class PersonDataServiceTest {
         List<PersonData> personDatas = personDataService.retrievePersonData();
         PersonData personData = personDatas.get(0);
         assertNotNull(personData);
+        assertNotNull(personData.getId());
         assertEquals(getPersonData().getLastName(), personData.getLastName());
     }
 
