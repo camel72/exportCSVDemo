@@ -4,9 +4,18 @@ import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.CsvDate;
 import lombok.Data;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.LocalDate;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 @Data
+@Entity
 public class PersonData {
 
     public PersonData() {
@@ -24,24 +33,45 @@ public class PersonData {
         this.affiliation = affiliation;
     }
 
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    private Long id;
+
+    @Column
     @CsvBindByPosition(position = 0)
     private String lastName;
+
+    @Column
     @CsvBindByPosition(position = 1)
     private String firstName;
+
+    @Column
     @CsvDate(value = "dd/MM/yy")
     @CsvBindByPosition(position = 2)
     private LocalDate birthDate;
+
+    @Column
     @CsvDate(value = "dd/MM/yy")
     @CsvBindByPosition(position = 3)
     private LocalDate DateOfDeath;
+
+    @Column
     @CsvBindByPosition(position = 4)
     private String street;
+
+    @Column
     @CsvBindByPosition(position = 5)
     private String number;
+
+    @Column
     @CsvBindByPosition(position = 6)
     private String city;
+
+    @Column
     @CsvBindByPosition(position = 7)
     private String ssin;
+
+    @Column
     @CsvBindByPosition(position = 8)
     private String affiliation;
 }
