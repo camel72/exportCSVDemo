@@ -34,6 +34,18 @@ public class PersonDataServiceTest {
         assertEquals(getPersonData().getLastName(), personData.getLastName());
     }
 
+    @Test
+    public void findByLastNameTest(){
+        assertEquals(getPersonData().getLastName(), personDataService.findByLastName("testLastName").get(0).getLastName());
+    }
+    @Test
+    public void findByLastAndFirstNameTest(){
+        PersonData personData = personDataService.findByLastNameAndFirstName("testLastName", "testFirstName").get(0);
+        assertEquals(getPersonData().getLastName(), personData.getLastName());
+        assertEquals(getPersonData().getFirstName(), personData.getFirstName());
+    }
+
+
     private PersonData getPersonData() {
         return new PersonDataBuilder()
                 .setLastName("testLastName")

@@ -24,13 +24,22 @@ public class PersonDataService {
         return personDataRepository.findAll();
     }
 
-    public List<PersonData> uploadPersonData(List<PersonData> personDataList) {
-        personDataRepository.saveAll(personDataList);
-        return personDataList;
-    }
-
     public List<PersonData> uploadPersonDataFromScratch() throws Exception {
         List<PersonData> personDatas = personDataCSVRepository.getPersonDatas();
         return uploadPersonData(personDatas);
+    }
+
+    public List<PersonData> findByLastName(String lastName){
+        return personDataRepository.findByLastName(lastName);
+    }
+
+    public List<PersonData> findByLastNameAndFirstName(String lastName, String firstName){
+        return personDataRepository.findByLastNameAndFirstName(lastName, firstName);
+    }
+
+
+    private List<PersonData> uploadPersonData(List<PersonData> personDataList) {
+        personDataRepository.saveAll(personDataList);
+        return personDataList;
     }
 }

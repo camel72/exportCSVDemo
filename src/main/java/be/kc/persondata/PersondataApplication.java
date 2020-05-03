@@ -12,6 +12,4 @@ public class PersondataApplication {
     public static void main(String[] args) {
         SpringApplication.run(PersondataApplication.class, args);
     }
-    // TODO add Rest controllers
-
 }
