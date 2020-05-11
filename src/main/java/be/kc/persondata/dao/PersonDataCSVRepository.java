@@ -7,6 +7,7 @@ import lombok.Data;
 import org.springframework.stereotype.Repository;
 
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -24,7 +25,7 @@ public class PersonDataCSVRepository {
 
     public List<PersonData> getPersonDatas() throws Exception {
         Reader reader = Files.newBufferedReader(Paths.get(
-                ClassLoader.getSystemResource("export.csv").toURI()));
+                ClassLoader.getSystemResource("export.csv").toURI()), StandardCharsets.ISO_8859_1);
 
         CsvToBean<PersonData> csvToBean = new CsvToBeanBuilder(reader)
                 .withType(PersonData.class)
