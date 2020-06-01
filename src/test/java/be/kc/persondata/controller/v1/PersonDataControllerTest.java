@@ -1,13 +1,14 @@
 package be.kc.persondata.controller.v1;
 
 import be.kc.persondata.model.PersonData;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.http.HttpStatus;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -27,16 +28,19 @@ class PersonDataControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    private ResponseEntity<String> responseLoad;
+
+
+    @BeforeEach
+    public void init() {
+        responseLoad = restTemplate.getForEntity(SERVER_URL + port + CONTEXT_URL + "load"
+                , String.class);
+    }
+
     @Test
     void testLoad() {
-        ResponseEntity<PersonData[]> response = restTemplate.getForEntity(SERVER_URL + port + CONTEXT_URL + "load"
-                , PersonData[].class);
-
-        assertThat(response).isNotNull();
-        PersonData[] body = response.getBody();
-        assertThat(body).isNotNull();
-        assertThat(body[0]).isNotNull();
-        assertEquals("testLastName", body[0].getLastName());
+        assertThat(responseLoad).isNotNull();
+        assertEquals(HttpStatus.OK, responseLoad.getStatusCode());
     }
 
     @Test
@@ -48,5 +52,6 @@ class PersonDataControllerTest {
         assertThat(personData).isNotNull();
         PersonData[] body = personData.getBody();
         assertEquals("testLastName", body[0].getLastName());
+        assertEquals("testFirstName", body[0].getFirstName());
     }
 }

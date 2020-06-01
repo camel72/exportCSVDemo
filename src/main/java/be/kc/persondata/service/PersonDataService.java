@@ -24,9 +24,8 @@ public class PersonDataService {
         return personDataRepository.findAll();
     }
 
-    public List<PersonData> uploadPersonDataFromScratch() throws Exception {
-        List<PersonData> personDatas = personDataCSVRepository.getPersonDatas();
-        return uploadPersonData(personDatas);
+    public void loadFile() throws Exception {
+        personDataCSVRepository.uploadFileToDB();
     }
 
     public List<PersonData> findByLastName(String lastName){
@@ -35,11 +34,5 @@ public class PersonDataService {
 
     public List<PersonData> findByLastNameAndFirstName(String lastName, String firstName){
         return personDataRepository.findByLastNameAndFirstName(lastName, firstName);
-    }
-
-
-    private List<PersonData> uploadPersonData(List<PersonData> personDataList) {
-        personDataRepository.saveAll(personDataList);
-        return personDataList;
     }
 }

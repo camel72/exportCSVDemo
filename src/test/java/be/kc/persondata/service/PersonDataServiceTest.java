@@ -22,7 +22,7 @@ public class PersonDataServiceTest {
 
     @BeforeEach
     public void uploadPersonDataTest() throws Exception{
-        personDataService.uploadPersonDataFromScratch();
+        personDataService.loadFile();
     }
 
     @Test
@@ -38,11 +38,13 @@ public class PersonDataServiceTest {
     public void findByLastNameTest(){
         assertEquals(getPersonData().getLastName(), personDataService.findByLastName("testLastName").get(0).getLastName());
     }
+
     @Test
     public void findByLastAndFirstNameTest(){
         PersonData personData = personDataService.findByLastNameAndFirstName("testLastName", "testFirstName").get(0);
-        assertEquals(getPersonData().getLastName(), personData.getLastName());
-        assertEquals(getPersonData().getFirstName(), personData.getFirstName());
+        PersonData personDataExpected = getPersonData();
+        assertEquals(personDataExpected.getLastName(), personData.getLastName());
+        assertEquals(personDataExpected.getFirstName(), personData.getFirstName());
     }
 
 

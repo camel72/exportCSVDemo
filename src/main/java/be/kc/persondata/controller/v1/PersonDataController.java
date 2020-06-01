@@ -20,9 +20,11 @@ public class PersonDataController {
         this.personDataService = personDataService;
     }
 
+    // TODO better way than use GetMapping?
     @GetMapping("load")
-    public ResponseEntity<List<PersonData>> load() throws Exception {
-        return new ResponseEntity<>(personDataService.uploadPersonDataFromScratch(), HttpStatus.OK);
+    public HttpStatus load() throws Exception {
+        personDataService.loadFile();
+        return HttpStatus.OK;
     }
 
     @GetMapping("lastname/{lastName}")
