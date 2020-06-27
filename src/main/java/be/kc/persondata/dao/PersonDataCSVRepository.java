@@ -14,7 +14,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.StreamSupport;
 
 @Repository
 @Data
@@ -30,6 +31,7 @@ public class PersonDataCSVRepository {
 
 
     public void uploadFileToDB() throws Exception {
+        logger.info("reading file export.csv");
         Reader reader = Files.newBufferedReader(Paths.get(
                 ClassLoader.getSystemResource("export.csv").toURI()), StandardCharsets.ISO_8859_1);
 
@@ -41,15 +43,18 @@ public class PersonDataCSVRepository {
         Instant start = null;
         try {
             start = Instant.now();
-            csvToBean.stream().parallel().forEach(personData -> {
-                int counter = 0;
-                logger.info("record " + ++counter);
+            AtomicInteger counter = new AtomicInteger(0);
+            logger.info("starting to process file export.csv");
+
+            StreamSupport.stream(csvToBean.spliterator(), true).forEach(personData -> {
+                logger.info(String.format("processing personData: %s", personData.toString()));
+                logger.info("record " + counter.getAndIncrement());
                 personDataRepository.save(personData);
             });
         } finally {
             Instant finish = Instant.now();
             long timeElapsed = Duration.between(start, finish).toMinutes();
-            logger.info(String.format("loading file 2 DB took %s minutes", timeElapsed));
+            logger.info(String.format("loading file into the DB took %s minutes", timeElapsed));
             reader.close();
         }
     }
