@@ -1,6 +1,6 @@
 package be.kc.persondata.controller.v1;
 
-import be.kc.persondata.model.PersonData;
+import be.kc.persondata.controller.v1.model.PersonDataDTO;
 import be.kc.persondata.service.PersonDataService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +28,7 @@ public class PersonDataController {
     }
 
     @GetMapping("lastname/{lastName}")
-    public ResponseEntity<List<PersonData>> findbyLastName(@PathVariable("lastName") String lastName) {
+    public ResponseEntity<List<PersonDataDTO>> findbyLastName(@PathVariable("lastName") String lastName) {
         return new ResponseEntity<>(personDataService.findByLastName(lastName), HttpStatus.OK);
     }
 }

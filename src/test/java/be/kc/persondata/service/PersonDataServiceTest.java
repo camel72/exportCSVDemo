@@ -1,7 +1,6 @@
 package be.kc.persondata.service;
 
-import be.kc.persondata.model.PersonData;
-import be.kc.persondata.model.PersonDataBuilder;
+import be.kc.persondata.controller.v1.model.PersonDataDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,43 +20,41 @@ public class PersonDataServiceTest {
 
 
     @BeforeEach
-    public void uploadPersonDataTest() throws Exception{
+    public void uploadPersonDataTest() throws Exception {
         personDataService.loadFile();
     }
 
     @Test
     public void getPersonDataTest() {
-        List<PersonData> personDatas = personDataService.retrievePersonData();
-        PersonData personData = personDatas.get(0);
-        assertNotNull(personData);
-        assertNotNull(personData.getId());
-        assertEquals(getPersonData().getLastName(), personData.getLastName());
+        List<PersonDataDTO> personDatas = personDataService.retrievePersonData();
+        PersonDataDTO personDataDTO = personDatas.get(0);
+        assertNotNull(personDataDTO);
+        assertEquals(getPersonDataDto().getLastName(), personDataDTO.getLastName());
     }
 
     @Test
-    public void findByLastNameTest(){
-        assertEquals(getPersonData().getLastName(), personDataService.findByLastName("testLastName").get(0).getLastName());
+    public void findByLastNameTest() {
+        assertEquals(getPersonDataDto().getLastName(), personDataService.findByLastName("testLastName").get(0).getLastName());
     }
 
     @Test
-    public void findByLastAndFirstNameTest(){
-        PersonData personData = personDataService.findByLastNameAndFirstName("testLastName", "testFirstName").get(0);
-        PersonData personDataExpected = getPersonData();
-        assertEquals(personDataExpected.getLastName(), personData.getLastName());
-        assertEquals(personDataExpected.getFirstName(), personData.getFirstName());
+    public void findByLastAndFirstNameTest() {
+        PersonDataDTO personData = personDataService.findByLastNameAndFirstName("testLastName", "testFirstName").get(0);
+        PersonDataDTO personDataDTOExpected = getPersonDataDto();
+        assertEquals(personDataDTOExpected.getLastName(), personData.getLastName());
+        assertEquals(personDataDTOExpected.getFirstName(), personData.getFirstName());
     }
 
-
-    private PersonData getPersonData() {
-        return new PersonDataBuilder()
-                .setLastName("testLastName")
-                .setFirstName("testFirstName")
-                .setBirthDate(LocalDate.of(2000, 1, 1))
-                .setStreet("testAddress")
-                .setNumber("1")
-                .setSsin("12345678901")
-                .setCity("testCity")
-                .setAffiliation("180")
-                .createPersonData();
+    private PersonDataDTO getPersonDataDto() {
+        return PersonDataDTO.builder()
+                .lastName("testLastName")
+                .firstName("testFirstName")
+                .birthDate(LocalDate.of(2000, 1, 1))
+                .street("testAddress")
+                .number("1")
+                .ssin("12345678901")
+                .city("testCity")
+                .affiliation("180")
+                .build();
     }
 }
