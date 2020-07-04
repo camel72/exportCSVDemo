@@ -15,13 +15,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest
 public class PersonDataServiceTest {
 
+    private static final String FILE_NAME = "export.csv";
+
     @Autowired
     private PersonDataService personDataService;
 
 
     @BeforeEach
     public void uploadPersonDataTest() throws Exception {
-        personDataService.loadFile();
+        personDataService.loadFile(FILE_NAME);
     }
 
     @Test

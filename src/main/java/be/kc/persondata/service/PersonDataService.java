@@ -31,8 +31,8 @@ public class PersonDataService {
                 .collect(Collectors.toList());
     }
 
-    public void loadFile() throws Exception {
-        personDataCSVRepository.uploadFileToDB();
+    public void loadFile(String fileName) throws Exception {
+        personDataCSVRepository.uploadFileToDB(fileName);
     }
 
     public List<PersonDataDTO> findByLastName(String lastName) {

@@ -2,6 +2,7 @@ package be.kc.persondata.controller.v1;
 
 import be.kc.persondata.controller.v1.model.PersonDataDTO;
 import be.kc.persondata.service.PersonDataService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/persondata/")
 public class PersonDataController {
+
+    @Value("${export.file.name}")
+    private String fileName;
+
     private PersonDataService personDataService;
+
 
     public PersonDataController(PersonDataService personDataService) {
         this.personDataService = personDataService;
@@ -23,7 +29,7 @@ public class PersonDataController {
     // TODO better way than use GetMapping?
     @GetMapping("load")
     public HttpStatus load() throws Exception {
-        personDataService.loadFile();
+        personDataService.loadFile(fileName);
         return HttpStatus.OK;
     }
 
