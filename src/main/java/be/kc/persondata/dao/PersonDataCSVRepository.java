@@ -45,8 +45,7 @@ public class PersonDataCSVRepository {
 
     public void uploadFileToDB(String fileName) throws Exception {
         logger.info("reading file export.csv");
-         Reader reader = new InputStreamReader(new ClassPathResource("export.csv").getInputStream());
-        //Reader reader = Files.newBufferedReader(Paths.inputStream, StandardCharsets.ISO_8859_1);
+         Reader reader = new InputStreamReader(new ClassPathResource(fileName).getInputStream());
         // Doesn't work when running the application from the packaged file (jar).
 //        Reader reader = Files.newBufferedReader(Paths.get(
 //                ClassLoader.getSystemResource(fileName).toURI()), StandardCharsets.ISO_8859_1);
