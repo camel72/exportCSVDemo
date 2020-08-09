@@ -12,8 +12,13 @@ services:
       - MYSQL_ROOT_PASSWORD=password
     ports:
       - 3306:3306
-#TODO ADD VOLUME
+    volumes:
+    - ../../../storage/dockerdata/mysql:/var/lib/mysq
+
   myapp-main:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: persondata
     restart: on-failure
     depends_on:
@@ -26,3 +31,4 @@ services:
       - DATABASE_PASSWORD=password
       - DATABASE_NAME=persondata
       - DATABASE_PORT=3306
+      #- "SPRING_PROFILES_ACTIVE=default" specified in Dockerfile (can be specified here as well)
