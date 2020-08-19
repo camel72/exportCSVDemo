@@ -1,9 +1,5 @@
 version: '2'
 
-networks:
-  bridge:
-    driver: bridge
-
 services:
   myapp-mysql:
     image: mysql:8.0
@@ -13,22 +9,25 @@ services:
     ports:
       - 3306:3306
     volumes:
-    - ../../../storage/dockerdata/mysql:/var/lib/mysq
+    - ../../../storage/dockerdata/mysql:/var/lib/mysql
 
   myapp-main:
     build:
       context: .
       dockerfile: Dockerfile
     image: persondata
+    # not available in version 2
+    #healthcheck:
+      #test: ["CMD", "curl", "-f", "http:localhost"]
+      #interval: 1m30s
+      #timeout: 10s
+      #retries: 3
     restart: on-failure
     depends_on:
       - myapp-mysql
     ports:
       - 8081:8081
-    environment:
-      - DATABASE_HOST=myapp-mysql
-      - DATABASE_USER=root
-      - DATABASE_PASSWORD=password
-      - DATABASE_NAME=persondata
-      - DATABASE_PORT=3306
+#    environment:
       #- "SPRING_PROFILES_ACTIVE=default" specified in Dockerfile (can be specified here as well)
+
+
