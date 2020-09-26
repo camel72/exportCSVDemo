@@ -15,13 +15,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-class PersonDataControllerTest {
+class PersonDataRestControllerTest {
 
     private static final String SERVER_URL = "http://localhost:";
     private static String CONTEXT_URL = "/api/v1/persondata/";
 
     @Autowired
-    PersonDataController controller;
+    PersonDataRestController controller;
 
     @LocalServerPort
     private int port;
