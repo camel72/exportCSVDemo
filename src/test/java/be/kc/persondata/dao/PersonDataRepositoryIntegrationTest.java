@@ -29,6 +29,7 @@ class PersonDataRepositoryIntegrationTest {
                 .setLastName("testLastName")
                 .setFirstName("testFirstName")
                 .setBirthDate(LocalDate.of(2000, 1, 1))
+                .setCity("testCity2")
                 .createPersonData();
 
         PersonData personData2 = new PersonDataBuilder()
@@ -75,7 +76,6 @@ class PersonDataRepositoryIntegrationTest {
     @Test
     public void findAllOrderByLastNameAndFirstNameAndCity() {
         List<PersonData> actual = repository.findAll();
-        // TODO sorting
         Assert.notEmpty(actual, "personData list is empty");
         assertEquals(2, actual.size());
     }

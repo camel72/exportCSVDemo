@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Comparator.comparing;
+
 @Service
 @Data
 public class PersonDataService {
@@ -24,10 +26,13 @@ public class PersonDataService {
         this.personDataMapper = personDataMapper;
     }
 
-    public List<PersonDataDTO> retrievePersonData() {
+    public List<PersonDataDTO> findAll() {
         return personDataRepository.findAll()
                 .stream()
                 .map(personData -> personDataMapper.personDataToPersonDataDTO(personData))
+                .sorted(comparing(PersonDataDTO::getLastName)
+                        .thenComparing(PersonDataDTO::getFirstName)
+                        .thenComparing(PersonDataDTO::getCity))
                 .collect(Collectors.toList());
     }
 

@@ -27,11 +27,14 @@ public class PersonDataServiceTest {
     }
 
     @Test
-    public void getPersonDataTest() {
-        List<PersonDataDTO> personDatas = personDataService.retrievePersonData();
+    public void findAllSortedByLastNameFirstNameAndCityTest() {
+        List<PersonDataDTO> personDatas = personDataService.findAll();
         PersonDataDTO personDataDTO = personDatas.get(0);
         assertNotNull(personDataDTO);
         assertEquals(getPersonDataDto().getLastName(), personDataDTO.getLastName());
+        assertEquals(getPersonDataDto().getSsin(), personDataDTO.getSsin());
+        assertEquals("11111111111", personDatas.get(1).getSsin());
+        assertEquals("testCity3", personDatas.get(2).getCity());
     }
 
     @Test
