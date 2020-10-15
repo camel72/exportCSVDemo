@@ -25,7 +25,7 @@ public class PersonDataService {
     }
 
     public List<PersonDataDTO> retrievePersonData() {
-       return personDataRepository.findAll()
+        return personDataRepository.findAll()
                 .stream()
                 .map(personData -> personDataMapper.personDataToPersonDataDTO(personData))
                 .collect(Collectors.toList());

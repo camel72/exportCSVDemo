@@ -4,19 +4,23 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="webjars/bootstrap/4.2.1/css/bootstrap-grid.min.css">
-    <link th:href="@{/css/persondata.css}" rel="stylesheet"/>
+    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.2.1/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/persondata.css}"/>
+
     <title>PersonData Search Index</title>
 </head>
+
 <body>
-<div class="container">
+<div class="container-fluid">
     <div class="col-md-12 text-center">
         <h1>
             <th:block th:text="${message}">message</th:block>
         </h1>
     </div>
-    <div class="row">
-        <img src="../static/images/droopy.gif" th:src="@{/images/droopy.gif}"/>
+    <div class="col-md-12 text-center">
+        <a th:href="@{/searchForm}">
+            <img src="../static/images/droopy.gif" th:src="@{/images/droopy.gif}"/>
+        </a>
     </div>
 </div>
 </body>

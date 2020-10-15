@@ -1,0 +1,49 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.2.1/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/persondata.css}"/>
+    <title>PersonData Search Index</title>
+</head>
+
+<body>
+<div class="container-fluid">
+    <div class="col-md-12 text-center">
+        <h2>Result</h2>
+    </div>
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">lastName</th>
+            <th scope="col">firstName</th>
+            <th scope="col">birthDate</th>
+            <th scope="col">date of death</th>
+            <th scope="col">street</th>
+            <th scope="col">number</th>
+            <th scope="col">city</th>
+            <th scope="col">ssin</th>
+            <th scope="col">affiliation</th>
+
+        </tr>
+        </thead>
+        <tr th:scope="row" th:each="personData, iStat: ${personDataDTOList}">
+            <td th:text="${iStat.count}"/>
+            <td th:text="${personData.lastName}"/>
+            <td th:text="${personData.firstName}"/>
+            <td th:text="${personData.birthDate}"/>
+            <td th:text="${personData.dateOfDeath}"/>
+            <td th:text="${personData.street}"/>
+            <td th:text="${personData.number}"/>
+            <td th:text="${personData.city}"/>
+            <td th:text="${personData.ssin}"/>
+            <td th:text="${personData.affiliation}"/>
+
+        </tr>
+    </table>
+</div>
+</body>
+<a th:class="information" th:href="@{/searchForm}">go back to search page</a>

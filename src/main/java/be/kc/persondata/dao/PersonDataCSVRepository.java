@@ -9,18 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Repository;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.URI;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -45,7 +36,7 @@ public class PersonDataCSVRepository {
 
     public void uploadFileToDB(String fileName) throws Exception {
         logger.info("reading file export.csv");
-         Reader reader = new InputStreamReader(new ClassPathResource(fileName).getInputStream());
+        Reader reader = new InputStreamReader(new ClassPathResource(fileName).getInputStream());
         // Doesn't work when running the application from the packaged file (jar).
 //        Reader reader = Files.newBufferedReader(Paths.get(
 //                ClassLoader.getSystemResource(fileName).toURI()), StandardCharsets.ISO_8859_1);

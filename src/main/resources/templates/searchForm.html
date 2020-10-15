@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.2.1/css/bootstrap.min.css}">
+    <link th:rel="stylesheet" th:href="@{/css/persondata.css}"/>
+    <title>PersonData Search Index</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="col-md-12 text-center">
+        <h1>
+            <th:block th:text="${message}">message</th:block>
+        </h1>
+    </div>
+
+    <form th:action="@{/search}" th:object="${personData}" method="post">
+        <div class="form-row">
+            <div class="col-md-3 form-group">
+                <label>Last name *</label>
+                <input class="form-control" type="text" th:field="*{lastName}" size="30" maxlength="80"/>
+            </div>
+            <div class="col-md-3 form-group">
+                <label>First name</label>
+                <input class="form-control" type="text" th:field="*{firstName}" size="30" maxlength="80"/>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+</body>
+</html>
