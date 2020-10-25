@@ -8,9 +8,10 @@ services:
       - MYSQL_ROOT_PASSWORD=password
     ports:
       - 3306:3306
+    restart: always
     volumes:
-    - ../../../storage/dockerdata/mysql:/var/lib/mysql
-
+      - ./mysql-data:/var/lib/mysql
+      - ./mysql-init-files:/docker-entrypoint-initdb.d
   myapp-main:
     build:
       context: .
@@ -27,7 +28,3 @@ services:
       - myapp-mysql
     ports:
       - 8081:8081
-#    environment:
-      #- "SPRING_PROFILES_ACTIVE=default" specified in Dockerfile (can be specified here as well)
-
-
