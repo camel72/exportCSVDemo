@@ -6,16 +6,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class PersonDataServiceTest {
 
-    private static final String FILE_NAME = "export.csv";
+    private static final String PATH = "src/test/resources/export.csv";
 
     @Autowired
     private PersonDataService personDataService;
@@ -23,18 +25,19 @@ public class PersonDataServiceTest {
 
     @BeforeEach
     public void uploadPersonDataTest() throws Exception {
-        personDataService.loadFile(FILE_NAME);
+        personDataService.loadFile(new File(PATH));
     }
 
     @Test
     public void findAllSortedByLastNameFirstNameAndCityTest() {
-        List<PersonDataDTO> personDatas = personDataService.findAll();
-        PersonDataDTO personDataDTO = personDatas.get(0);
+        List<PersonDataDTO> personDatas = personDataService.findAllSortedByLastNameFirstNameAndCity();
+
+        PersonDataDTO personDataDTO = personDatas.get(6);
         assertNotNull(personDataDTO);
         assertEquals(getPersonDataDto().getLastName(), personDataDTO.getLastName());
         assertEquals(getPersonDataDto().getSsin(), personDataDTO.getSsin());
-        assertEquals("11111111111", personDatas.get(1).getSsin());
-        assertEquals("testCity3", personDatas.get(2).getCity());
+        assertEquals("11111111111", personDatas.get(7).getSsin());
+        assertEquals("testCity3", personDatas.get(8).getCity());
     }
 
     @Test
@@ -45,10 +48,19 @@ public class PersonDataServiceTest {
     @Test
     public void findByLastAndFirstNameTest() {
         PersonDataDTO personData = personDataService.findByLastNameAndFirstName("testLastName", "testFirstName").get(0);
+
         PersonDataDTO personDataDTOExpected = getPersonDataDto();
         assertEquals(personDataDTOExpected.getLastName(), personData.getLastName());
         assertEquals(personDataDTOExpected.getFirstName(), personData.getFirstName());
     }
+
+    @Test
+    void deleteAll() {
+        personDataService.deleteAll();
+
+        assertTrue(personDataService.findAllSortedByLastNameFirstNameAndCity().isEmpty());
+    }
+
 
     private PersonDataDTO getPersonDataDto() {
         return PersonDataDTO.builder()

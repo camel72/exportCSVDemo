@@ -19,16 +19,33 @@
     <form th:action="@{/search}" th:object="${personData}" method="post">
         <div class="form-row">
             <div class="col-md-3 form-group">
-                <label>Last name *</label>
+                <label>Last name</label>
                 <input class="form-control" type="text" th:field="*{lastName}" size="30" maxlength="80"/>
             </div>
+        </div>
+        <div class="form-row">
             <div class="col-md-3 form-group">
                 <label>First name</label>
                 <input class="form-control" type="text" th:field="*{firstName}" size="30" maxlength="80"/>
             </div>
         </div>
+        <div class="form-row">
+            <div class="col-md-3 form-group">
+                <label>Street name</label>
+                <input class="form-control" type="text" th:field="*{street}" size="30" maxlength="80"/>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-3 form-group">
+                <label>City</label>
+                <input class="form-control" type="text" th:field="*{city}" size="30" maxlength="80"/>
+            </div>
+        </div>
         <button type="submit" class="btn btn-primary">Search</button>
     </form>
+</div>
+<div>
+    <a th:class="information" th:href="@{/index}">go back to index page</a>
 </div>
 </body>
 </html>

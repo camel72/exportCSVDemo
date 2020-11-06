@@ -11,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -27,7 +28,7 @@ import static org.mockito.Mockito.when;
 public class PersonDataCSVRepositoryTest {
 
     @Value("${export.file.name}")
-    private String fileName;
+    private String path;
 
     @Autowired
     private PersonDataCSVRepository personDataCSVRepository;
@@ -38,7 +39,7 @@ public class PersonDataCSVRepositoryTest {
 
     @Test
     public void uploadFileToDBMainSuccessScenarioTest() throws Exception {
-        personDataCSVRepository.uploadFileToDB(fileName);
+        personDataCSVRepository.uploadFileToDB(new File(path));
 
         verify(personDataRepository, atLeastOnce()).findByLastNameAndFirstNameAndBirthDate(
                 "testLastName", "testFirstName", LocalDate.of(2000, 1, 1)
@@ -54,7 +55,7 @@ public class PersonDataCSVRepositoryTest {
                 anyString(), anyString(), any(LocalDate.class)))
                 .thenReturn(personDataList);
 
-        personDataCSVRepository.uploadFileToDB(fileName);
+        personDataCSVRepository.uploadFileToDB(new File(path));
 
         verify(personDataRepository, atLeastOnce()).findByLastNameAndFirstNameAndBirthDate("testLastName", "testFirstName", LocalDate.of(2000, 1, 1));
         verify(personDataRepository, never()).save(any());

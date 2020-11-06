@@ -4,15 +4,27 @@ import be.kc.persondata.model.PersonData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+
+import java.io.File;
+import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 class PersonDataRestControllerTest {
@@ -22,6 +34,13 @@ class PersonDataRestControllerTest {
 
     @Autowired
     PersonDataRestController controller;
+
+    @Value("${export.file.name}")
+    private String path;
+
+    @Value("${spring.servlet.multipart.location}")
+    private String UPLOAD_DIR;
+
 
     @LocalServerPort
     private int port;
@@ -33,9 +52,15 @@ class PersonDataRestControllerTest {
 
 
     @BeforeEach
-    public void init() {
-        responseLoad = restTemplate.getForEntity(SERVER_URL + port + CONTEXT_URL + "load"
-                , String.class);
+    public void init() throws IOException {
+        MultiValueMap<String, Object> bodyMap = new LinkedMultiValueMap<>();
+        bodyMap.add("file", new FileSystemResource(new File(path)));
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(bodyMap, headers);
+
+        responseLoad = restTemplate.exchange(SERVER_URL + port + CONTEXT_URL + "load",
+                HttpMethod.POST, requestEntity, String.class);
     }
 
     @Test

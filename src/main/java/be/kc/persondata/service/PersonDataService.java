@@ -7,6 +7,7 @@ import be.kc.persondata.dao.PersonDataRepository;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +27,7 @@ public class PersonDataService {
         this.personDataMapper = personDataMapper;
     }
 
-    public List<PersonDataDTO> findAll() {
+    public List<PersonDataDTO> findAllSortedByLastNameFirstNameAndCity() {
         return personDataRepository.findAll()
                 .stream()
                 .map(personData -> personDataMapper.personDataToPersonDataDTO(personData))
@@ -36,8 +37,8 @@ public class PersonDataService {
                 .collect(Collectors.toList());
     }
 
-    public void loadFile(String fileName) throws Exception {
-        personDataCSVRepository.uploadFileToDB(fileName);
+    public void loadFile(File file) throws Exception {
+        personDataCSVRepository.uploadFileToDB(file);
     }
 
     public List<PersonDataDTO> findByLastName(String lastName) {
@@ -52,5 +53,9 @@ public class PersonDataService {
                 .stream()
                 .map(personData -> personDataMapper.personDataToPersonDataDTO(personData))
                 .collect(Collectors.toList());
+    }
+
+    public void deleteAll() {
+        personDataRepository.deleteAll();
     }
 }

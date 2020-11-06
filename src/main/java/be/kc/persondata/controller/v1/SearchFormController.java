@@ -30,7 +30,7 @@ public class SearchFormController {
 
     @RequestMapping("/searchForm")
     public String searchForm(Model model) {
-        LOGGER.info("**********in searchFrom *********");
+        LOGGER.info("**********in searchForm *********");
         model.addAttribute("message", welcomMessage);
         model.addAttribute("personData", new PersonDataBuilder().createPersonData());
 
@@ -41,12 +41,14 @@ public class SearchFormController {
     public String searchPersonData(@ModelAttribute PersonData personData, Model model) {
         LOGGER.info("**********searchFrom: searchPersonData *********");
         List<PersonDataDTO> personDataDTOList = null;
-        if (StringUtils.isNotBlank(personData.getLastName())){
-            if (personData.getLastName().equals("")){
-                //personDataDTOList = service.findByLastNameAndFirstName();
-            }
+        if (StringUtils.isEmpty(personData.getLastName()) && StringUtils.isEmpty(personData.getFirstName())) {
+            personDataDTOList = service.findAllSortedByLastNameFirstNameAndCity();
+        } else if (StringUtils.isNotBlank(personData.getLastName()) && StringUtils.isEmpty(personData.getFirstName())) {
             personDataDTOList = service.findByLastName(personData.getLastName());
+        } else {
+            personDataDTOList = service.findByLastNameAndFirstName(personData.getLastName(), personData.getFirstName());
         }
+
         if (personDataDTOList != null) {
             model.addAttribute(personDataDTOList);
             personDataDTOList.stream().forEach(personDataDTO -> LOGGER.info(String.format("record :[%s]", personDataDTO.toString())));
