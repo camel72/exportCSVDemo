@@ -1,0 +1,2 @@
+create table person_data
+    (id bigint, date_of_death date, affiliation varchar(255), birth_date date, city varchar(255), first_name varchar(255), last_name varchar(255), number varchar(255), ssin varchar(255), street varchar(255), primary key (id));
