@@ -18,7 +18,7 @@
         </h1>
     </div>
 
-    <p th:text="${uploadMessage}" th:if="${uploadMessage ne null}" class="alert alert-primary"></p>
+
     <form method="post" th:action="@{/upload}" enctype="multipart/form-data">
         <div class="col-md-6">
             <div class="form-group">
@@ -29,8 +29,8 @@
             </div>
         </div>
     </form>
+    <p th:text="${uploadMessage}" th:if="${uploadMessage ne null}" class="alert alert-primary"></p>
 
-    <p th:text="${deleteMessage}" th:if="${deleteMessage ne null}" class="alert alert-primary"></p>
     <form method="get" th:action="@{/delete}">
         <div class="col-md-6">
             <div class="form-group">
@@ -38,13 +38,14 @@
             </div>
         </div>
     </form>
-
+    <p th:text="${deleteMessage}" th:if="${deleteMessage ne null}" class="alert alert-primary"></p>
 
     <div class="col-md-12 text-center">
         <a th:href="@{/searchForm}">
             <img src="../static/images/droopy.gif" th:src="@{/images/droopy.gif}"/>
         </a>
     </div>
+
 </div>
 </body>
 </html>

@@ -44,12 +44,12 @@ public class PersonData {
     private String firstName;
 
     @Column
-    @CsvDate(value = "dd/MM/yyyy")
+    @CsvDate(value = "yyyy-MM-dd")
     @CsvBindByPosition(position = 2)
     private LocalDate birthDate;
 
     @Column
-    @CsvDate(value = "dd/MM/yyyy")
+    @CsvDate(value = "yyyy-MM-dd")
     @CsvBindByPosition(position = 3)
     private LocalDate DateOfDeath;
 

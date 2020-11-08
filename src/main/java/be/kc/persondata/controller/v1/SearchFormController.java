@@ -51,7 +51,12 @@ public class SearchFormController {
 
         if (personDataDTOList != null) {
             model.addAttribute(personDataDTOList);
-            personDataDTOList.stream().forEach(personDataDTO -> LOGGER.info(String.format("record :[%s]", personDataDTO.toString())));
+            personDataDTOList.stream()
+                    .parallel()
+                    .forEach(
+                            personDataDTO ->
+                                    LOGGER.info(String.format("record :[%s]", personDataDTO.toString()))
+                    );
         } else {
             LOGGER.info("empty resultset");
         }

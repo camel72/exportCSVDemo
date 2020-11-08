@@ -30,6 +30,7 @@ public class PersonDataService {
     public List<PersonDataDTO> findAllSortedByLastNameFirstNameAndCity() {
         return personDataRepository.findAll()
                 .stream()
+                .parallel()
                 .map(personData -> personDataMapper.personDataToPersonDataDTO(personData))
                 .sorted(comparing(PersonDataDTO::getLastName)
                         .thenComparing(PersonDataDTO::getFirstName)
@@ -44,6 +45,7 @@ public class PersonDataService {
     public List<PersonDataDTO> findByLastName(String lastName) {
         return personDataRepository.findByLastName(lastName)
                 .stream()
+                .parallel()
                 .map(personData -> personDataMapper.personDataToPersonDataDTO(personData))
                 .collect(Collectors.toList());
     }
@@ -51,11 +53,12 @@ public class PersonDataService {
     public List<PersonDataDTO> findByLastNameAndFirstName(String lastName, String firstName) {
         return personDataRepository.findByLastNameAndFirstName(lastName, firstName)
                 .stream()
+                .parallel()
                 .map(personData -> personDataMapper.personDataToPersonDataDTO(personData))
                 .collect(Collectors.toList());
     }
 
     public void deleteAll() {
-        personDataRepository.deleteAll();
+        personDataRepository.deleteAllInBatch();
     }
 }
