@@ -8,13 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.time.Duration;
 import java.time.Instant;
@@ -35,11 +32,9 @@ public class PersonDataCSVRepository {
 
 
     public void uploadFileToDB(File file) throws IOException {
-
         logger.info("reading file export.csv");
 
-        Reader reader = new InputStreamReader(new FileInputStream(file));
-        //BufferedReader reader = new BufferedReader(new FileReader(file));
+        BufferedReader reader = new BufferedReader(new FileReader(file));
 
         CsvToBean<PersonData> csvToBeanPersonData = new CsvToBeanBuilder(reader)
                 .withType(PersonData.class)
@@ -52,7 +47,7 @@ public class PersonDataCSVRepository {
             processCSVToPersonData(reader, csvToBeanPersonData);
         } finally {
             Instant finish = Instant.now();
-            long timeElapsed = Duration.between(start, finish).getSeconds();
+            long timeElapsed = Duration.between(start, finish).toMinutes();
             logger.info(String.format("loading file into the DB took %s minutes", timeElapsed));
             reader.close();
         }
@@ -65,12 +60,8 @@ public class PersonDataCSVRepository {
         Instant start = Instant.now();
         StreamSupport.stream(csvToBean.spliterator(), true)
                 .forEach(personData -> {
-                    if (counter.get() < 10000) {
-                        personDataRepository.save(personData);
-                        logger.info("record " + counter.getAndIncrement());
-                    } else {
-                        throw new RuntimeException("testing purpose");
-                    }
+                    personDataRepository.save(personData);
+                    logger.info("record " + counter.getAndIncrement());
                 });
     }
 }
