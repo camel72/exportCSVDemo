@@ -8,6 +8,7 @@ import lombok.Data;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,9 +33,7 @@ public class PersonDataService {
                 .stream()
                 .parallel()
                 .map(personData -> personDataMapper.personDataToPersonDataDTO(personData))
-                .sorted(comparing(PersonDataDTO::getLastName)
-                        .thenComparing(PersonDataDTO::getFirstName)
-                        .thenComparing(PersonDataDTO::getCity))
+                .sorted(getPersonDataDTOComparator())
                 .collect(Collectors.toList());
     }
 
@@ -47,6 +46,7 @@ public class PersonDataService {
                 .stream()
                 .parallel()
                 .map(personData -> personDataMapper.personDataToPersonDataDTO(personData))
+                .sorted(getPersonDataDTOComparator())
                 .collect(Collectors.toList());
     }
 
@@ -55,10 +55,19 @@ public class PersonDataService {
                 .stream()
                 .parallel()
                 .map(personData -> personDataMapper.personDataToPersonDataDTO(personData))
+                .sorted(getPersonDataDTOComparator())
                 .collect(Collectors.toList());
     }
 
     public void deleteAll() {
         personDataRepository.deleteAllInBatch();
+    }
+
+
+    private Comparator<PersonDataDTO> getPersonDataDTOComparator() {
+        return comparing(PersonDataDTO::getLastName)
+                .thenComparing(PersonDataDTO::getFirstName)
+                .thenComparing(PersonDataDTO::getCity)
+                .thenComparing(PersonDataDTO::getBirthDate);
     }
 }
