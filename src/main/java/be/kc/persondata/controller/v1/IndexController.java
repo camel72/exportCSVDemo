@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,8 +48,8 @@ public class IndexController {
     @RequestMapping({"", "/", "index", "index.html"})
     public String index(Model model) throws Exception {
         if (env.equals("test")) {
-
             LOGGER.info("**********IndexController: loading file *********");
+            personDataService.deleteAll();
             personDataService.loadFile(new File(path));
         }
         LOGGER.info("**********IndexController:" + welcomeMessage + "*********");
@@ -85,5 +87,13 @@ public class IndexController {
                 String.format("You successfully uploaded file %s !", uploadedFile.getName()));
 
         return "redirect:/";
+    }
+
+    @GetMapping("/map/street/{street}/number/{number}/city/{city}")
+    public String map(@PathVariable("street") String street, @PathVariable("number") String number, @PathVariable("city") String city, Model model) {
+        LOGGER.info("**********IndexController: map*********" + street);
+
+        String redirectUrl = String.format("https://www.google.com/maps/search/?api=1&query=%s %s %S", street, number, city);
+        return "redirect:" + redirectUrl;
     }
 }

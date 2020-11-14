@@ -28,9 +28,10 @@
             <th scope="col">city</th>
             <th scope="col">ssin</th>
             <th scope="col">affiliation</th>
-
+            <th scope="col">location</th>
         </tr>
         </thead>
+
         <tr th:scope="row" th:each="personData, iStat: ${personDataDTOList}">
             <td th:text="${iStat.count}"/>
             <td th:text="${personData.lastName}"/>
@@ -42,7 +43,11 @@
             <td th:text="${personData.city}"/>
             <td th:text="${personData.ssin}"/>
             <td th:text="${personData.affiliation}"/>
-
+            <td>
+                <a th:href="@{/map/street/{street}/number/{number}/city/{city}(street=${personData.street}, number=${personData.number}, city=${personData.city})}">
+                    <img src="../static/images/maps.png" th:width="30" th:height="30" th:src="@{/images/maps.png}"/>
+                </a>
+            </td>
         </tr>
     </table>
 </div>
