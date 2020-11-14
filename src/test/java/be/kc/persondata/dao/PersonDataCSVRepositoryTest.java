@@ -42,9 +42,6 @@ public class PersonDataCSVRepositoryTest {
     public void uploadFileToDBMainSuccessScenarioTest() throws Exception {
         personDataCSVRepository.uploadFileToDB(new File(path));
 
-//        verify(personDataRepository, atLeastOnce()).findByLastNameAndFirstNameAndBirthDate(
-//                "testLastName", "testFirstName", LocalDate.of(2000, 1, 1)
-//        );
         verify(personDataRepository, atLeastOnce()).save(any());
     }
 
