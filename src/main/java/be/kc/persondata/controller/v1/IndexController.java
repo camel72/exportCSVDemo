@@ -88,12 +88,4 @@ public class IndexController {
 
         return "redirect:/";
     }
-
-    @GetMapping("/map/street/{street}/number/{number}/city/{city}")
-    public String map(@PathVariable("street") String street, @PathVariable("number") String number, @PathVariable("city") String city, Model model) {
-        LOGGER.info("**********IndexController: map*********" + street);
-
-        String redirectUrl = String.format("https://www.google.com/maps/search/?api=1&query=%s %s %S", street, number, city);
-        return "redirect:" + redirectUrl;
-    }
 }
