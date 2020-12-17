@@ -4,5 +4,6 @@ create table person_data
 create index idx_last_name on person_data (last_name);
 create index idx_first_name on person_data (first_name);
 create index idx_birth_date on person_data (birth_date);
+create index idx_street_number on person_data (street, number);
 create index idx_names on person_data(last_name,first_name);
 create index idx_names_birth_date on person_data(last_name, first_name, birth_date);
