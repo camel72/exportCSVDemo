@@ -4,6 +4,7 @@ import be.kc.persondata.controller.v1.mapper.PersonDataMapper;
 import be.kc.persondata.controller.v1.model.PersonDataDTO;
 import be.kc.persondata.dao.PersonDataCSVRepository;
 import be.kc.persondata.dao.PersonDataRepository;
+import be.kc.persondata.model.PersonData;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +53,15 @@ public class PersonDataService {
 
     public List<PersonDataDTO> findByLastNameAndFirstName(String lastName, String firstName) {
         return personDataRepository.findByLastNameAndFirstName(lastName, firstName)
+                .stream()
+                .parallel()
+                .map(personData -> personDataMapper.personDataToPersonDataDTO(personData))
+                .sorted(getPersonDataDTOComparator())
+                .collect(Collectors.toList());
+    }
+
+    public List<PersonDataDTO> findByStreetAndNumberAndCity(String street, String number, String city){
+        return personDataRepository.findByStreetAndNumberAndCity(street, number, city)
                 .stream()
                 .parallel()
                 .map(personData -> personDataMapper.personDataToPersonDataDTO(personData))

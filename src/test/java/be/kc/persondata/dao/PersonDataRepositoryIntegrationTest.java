@@ -29,13 +29,17 @@ class PersonDataRepositoryIntegrationTest {
                 .setLastName("testLastName")
                 .setFirstName("testFirstName")
                 .setBirthDate(LocalDate.of(2000, 1, 1))
-                .setCity("testCity2")
+                .setStreet("testStreet1")
+                .setNumber("1")
+                .setCity("testCity1")
                 .createPersonData();
 
         PersonData personData2 = new PersonDataBuilder()
                 .setLastName("testLastName2")
                 .setFirstName("testFirstName2")
                 .setBirthDate(LocalDate.of(2001, 1, 1))
+                .setStreet("testStreet2")
+                .setNumber("2")
                 .setCity("testCity")
                 .createPersonData();
 
@@ -78,5 +82,15 @@ class PersonDataRepositoryIntegrationTest {
         List<PersonData> actual = repository.findAll();
         Assert.notEmpty(actual, "personData list is empty");
         assertEquals(2, actual.size());
+    }
+
+    @Test
+    public void findByStreetAndNumberAndCity(){
+        List<PersonData> actual = repository.findByStreetAndNumberAndCity("testStreet1", "1", "testCity1");
+
+        Assert.notEmpty(actual, "personData list is empty");
+        assertEquals(1, actual.size());
+        assertEquals("testStreet1", actual.get(0).getStreet());
+        assertEquals("1", actual.get(0).getNumber());
     }
 }

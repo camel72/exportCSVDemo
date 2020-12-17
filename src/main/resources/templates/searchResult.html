@@ -33,7 +33,10 @@
         </thead>
 
         <tr th:scope="row" th:each="personData, iStat: ${personDataDTOList}">
-            <td th:text="${iStat.count}"/>
+            <td>
+                <a th:text="${iStat.count}"
+                   th:href="@{/search/street/{street}/number/{number}/city/{city}(street=${personData.street}, number=${personData.number}, city=${personData.city})}"/>
+            </td>
             <td th:text="${personData.lastName}"/>
             <td th:text="${personData.firstName}"/>
             <td th:text="${personData.birthDate}"/>
@@ -48,6 +51,7 @@
                     <img src="../static/images/maps.png" th:width="30" th:height="30" th:src="@{/images/maps.png}"/>
                 </a>
             </td>
+            </a>
         </tr>
     </table>
 </div>
