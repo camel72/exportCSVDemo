@@ -30,7 +30,7 @@ public class SearchResultController {
         return "redirect:" + redirectUrl;
     }
 
-    @RequestMapping("/search/street/{street}/number/{number}")
+    @RequestMapping("/search/street/{street}/number/{number}/city/{city}")
     public String search(@PathVariable("street") String street, @PathVariable("number") String number, @PathVariable("city") String city, Model model) {
         LOGGER.info("**********SearchResultController: searchSameAddress*********");
 
