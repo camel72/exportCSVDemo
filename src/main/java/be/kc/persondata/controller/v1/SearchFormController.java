@@ -49,6 +49,8 @@ public class SearchFormController {
             personDataDTOList = service.findByLastNameAndFirstName(personData.getLastName(), personData.getFirstName());
         } else if (isFindByStreetAndNumber().test(personData)) {
             personDataDTOList = service.findByStreetAndNumberAndCity(personData.getStreet(), personData.getNumber(), personData.getCity());
+        } else if (isFindByStreet().test(personData)) {
+            personDataDTOList = service.findByStreet(personData.getStreet());
         }
 
         if (personDataDTOList != null) {
@@ -87,5 +89,9 @@ public class SearchFormController {
     private Predicate<PersonData> isFindByStreetAndNumber() {
         return personData -> StringUtils.isNotBlank(personData.getStreet())
                 && StringUtils.isNotBlank(personData.getNumber());
+    }
+
+    private Predicate<PersonData> isFindByStreet(){
+        return personData -> StringUtils.isNotBlank(personData.getStreet());
     }
 }

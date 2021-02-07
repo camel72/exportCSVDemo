@@ -33,7 +33,7 @@ public class PersonDataService {
                 .stream()
                 .parallel()
                 .map(personData -> personDataMapper.personDataToPersonDataDTO(personData))
-                .sorted(getPersonDataDTOComparator())
+                .sorted(getDefaultPersonDataDTOComparator())
                 .collect(Collectors.toList());
     }
 
@@ -46,7 +46,7 @@ public class PersonDataService {
                 .stream()
                 .parallel()
                 .map(personData -> personDataMapper.personDataToPersonDataDTO(personData))
-                .sorted(getPersonDataDTOComparator())
+                .sorted(getDefaultPersonDataDTOComparator())
                 .collect(Collectors.toList());
     }
 
@@ -55,7 +55,7 @@ public class PersonDataService {
                 .stream()
                 .parallel()
                 .map(personData -> personDataMapper.personDataToPersonDataDTO(personData))
-                .sorted(getPersonDataDTOComparator())
+                .sorted(getDefaultPersonDataDTOComparator())
                 .collect(Collectors.toList());
     }
 
@@ -64,16 +64,16 @@ public class PersonDataService {
                 .stream()
                 .parallel()
                 .map(personData -> personDataMapper.personDataToPersonDataDTO(personData))
-                .sorted(getPersonDataDTOComparator())
+                .sorted(getDefaultPersonDataDTOComparator())
                 .collect(Collectors.toList());
     }
 
-    public List<PersonDataDTO> findByStreetName(String streetName) {
-        return personDataRepository.findByStreet(streetName)
+    public List<PersonDataDTO> findByStreet(String street) {
+        return personDataRepository.findByStreet(street)
                 .stream()
                 .parallel()
                 .map(personData -> personDataMapper.personDataToPersonDataDTO(personData))
-                .sorted(getPersonDataDTOComparator())
+                .sorted(getStreetAndNumberPersonDataDTOComparator())
                 .collect(Collectors.toList());
     }
 
@@ -82,10 +82,20 @@ public class PersonDataService {
     }
 
 
-    private Comparator<PersonDataDTO> getPersonDataDTOComparator() {
+    private Comparator<PersonDataDTO> getDefaultPersonDataDTOComparator() {
         return comparing(PersonDataDTO::getLastName)
                 .thenComparing(PersonDataDTO::getFirstName)
                 .thenComparing(PersonDataDTO::getCity)
+                .thenComparing(PersonDataDTO::getStreet)
+                .thenComparing(PersonDataDTO::getNumber)
                 .thenComparing(PersonDataDTO::getBirthDate);
+    }
+
+    private Comparator<PersonDataDTO> getStreetAndNumberPersonDataDTOComparator() {
+        return comparing(PersonDataDTO::getCity)
+                .thenComparing(PersonDataDTO::getStreet)
+                .thenComparing(PersonDataDTO::getNumber)
+                .thenComparing(PersonDataDTO::getLastName)
+                .thenComparing(PersonDataDTO::getFirstName);
     }
 }

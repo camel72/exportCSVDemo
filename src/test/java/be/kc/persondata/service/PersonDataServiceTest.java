@@ -25,6 +25,7 @@ public class PersonDataServiceTest {
 
     @BeforeEach
     public void uploadPersonDataTest() throws Exception {
+        personDataService.deleteAll();
         personDataService.loadFile(new File(PATH));
     }
 
@@ -56,7 +57,7 @@ public class PersonDataServiceTest {
 
     @Test
     public void findByStreetNameTest() {
-        List<PersonDataDTO> searchList = personDataService.findByStreetName("testStraat");
+        List<PersonDataDTO> searchList = personDataService.findByStreet("testStraat");
         assertTrue(searchList.size() == 3);
         PersonDataDTO personData = searchList.get(0);
 
@@ -80,7 +81,7 @@ public class PersonDataServiceTest {
                 .firstName("testFirstName")
                 .birthDate(LocalDate.of(2000, 1, 1))
                 .street("testStraat")
-                .number("1")
+                .number(1)
                 .ssin("12345678901")
                 .city("testCity")
                 .affiliation("180")

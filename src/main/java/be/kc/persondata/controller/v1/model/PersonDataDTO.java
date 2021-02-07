@@ -17,7 +17,7 @@ public class PersonDataDTO {
     private LocalDate birthDate;
     private LocalDate DateOfDeath;
     private String street;
-    private String number;
+    private Integer number;
     private String city;
     private String ssin;
     private String affiliation;
