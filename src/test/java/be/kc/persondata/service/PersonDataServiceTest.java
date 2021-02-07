@@ -55,6 +55,18 @@ public class PersonDataServiceTest {
     }
 
     @Test
+    public void findByStreetNameTest() {
+        List<PersonDataDTO> searchList = personDataService.findByStreetName("testStraat");
+        assertTrue(searchList.size() == 3);
+        PersonDataDTO personData = searchList.get(0);
+
+        PersonDataDTO personDataDTOExpected = getPersonDataDto();
+        assertEquals(personDataDTOExpected.getLastName(), personData.getLastName());
+        assertEquals(personDataDTOExpected.getFirstName(), personData.getFirstName());
+    }
+
+
+    @Test
     void deleteAll() {
         personDataService.deleteAll();
 
@@ -67,7 +79,7 @@ public class PersonDataServiceTest {
                 .lastName("testLastName")
                 .firstName("testFirstName")
                 .birthDate(LocalDate.of(2000, 1, 1))
-                .street("testAddress")
+                .street("testStraat")
                 .number("1")
                 .ssin("12345678901")
                 .city("testCity")

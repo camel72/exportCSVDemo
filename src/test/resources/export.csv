@@ -1,6 +1,6 @@
-testLastName,testFirstName,2000-01-01,,testAddress,1,testCity,12345678901,180
-testLastName1,testFirstName,2001-01-01,,testAddress,1,testCity2,11111111111,180
-testLastName1,testFirstName1,2001-01-01,,testAddress,1,testCity3,22222222222,180
+testLastName,testFirstName,2000-01-01,,testStraat,1,testCity,12345678901,180
+testLastName1,testFirstName,2001-01-01,,testStraat,1,testCity2,11111111111,180
+testLastName1,testFirstName1,2001-01-01,,testStraat,1,testCity3,22222222222,180
 de Hypochonderpier,pjotr,1957-01-01,,moerasstraat,1,moerasdorp,33333333333,180
 de Hypochonderpier,atsirhc,1958-01-01,,moerasstraat,1,moerasdorp,44444444444,180
 de Hypochonderpier,retep,1922-01-01,,moerasstraat,1,moerasdorp,55555555555,180

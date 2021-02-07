@@ -15,4 +15,6 @@ public interface PersonDataRepository extends JpaRepository<PersonData, String> 
     List<PersonData> findByLastNameAndFirstNameAndBirthDate(String lastName, String firstName, LocalDate birthDate);
 
     List<PersonData> findByStreetAndNumberAndCity(String street, String number, String city);
+
+    List<PersonData> findByStreet(String street);
 }
