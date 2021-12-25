@@ -81,7 +81,7 @@ public class PersonDataServiceTest {
                 .firstName("testFirstName")
                 .birthDate(LocalDate.of(2000, 1, 1))
                 .street("testStraat")
-                .number(1)
+                .number("1")
                 .ssin("12345678901")
                 .city("testCity")
                 .affiliation("180")

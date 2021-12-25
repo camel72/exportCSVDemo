@@ -59,12 +59,24 @@ public class PersonDataService {
                 .collect(Collectors.toList());
     }
 
+    public List<PersonDataDTO> findByStreetAndCity(String street, String city) {
+        return personDataRepository.findByStreetAndCity(street, city)
+                .stream()
+                .parallel()
+                .map(personData -> personDataMapper.personDataToPersonDataDTO(personData))
+                .sorted(comparing(PersonDataDTO::getNumber)
+                        .thenComparing(PersonDataDTO::getLastName)
+                        .thenComparing(PersonDataDTO::getFirstName))
+                .collect(Collectors.toList());
+    }
+
+
     public List<PersonDataDTO> findByStreetAndNumberAndCity(String street, String number, String city) {
         return personDataRepository.findByStreetAndNumberAndCity(street, number, city)
                 .stream()
                 .parallel()
                 .map(personData -> personDataMapper.personDataToPersonDataDTO(personData))
-                .sorted(getDefaultPersonDataDTOComparator())
+                .sorted(getStreetAndNumberPersonDataDTOComparator())
                 .collect(Collectors.toList());
     }
 
