@@ -16,16 +16,19 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity
 public class PersonData {
 
+
+
     public PersonData() {
     }
 
-    public PersonData(String lastName, String firstName, LocalDate birthDate, LocalDate dateOfDeath, String street, String number, String city, String ssin, String affiliation) {
+    public PersonData(String lastName, String firstName, LocalDate birthDate, LocalDate dateOfDeath, String street, String number, String box, String city, String ssin, String affiliation) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.birthDate = birthDate;
         DateOfDeath = dateOfDeath;
         this.street = street;
         this.number = number;
+        this.box = box;
         this.city = city;
         this.ssin = ssin;
         this.affiliation = affiliation;
@@ -63,13 +66,17 @@ public class PersonData {
 
     @Column
     @CsvBindByPosition(position = 6)
-    private String city;
+    private String box;
 
     @Column
     @CsvBindByPosition(position = 7)
-    private String ssin;
+    private String city;
 
     @Column
     @CsvBindByPosition(position = 8)
+    private String ssin;
+
+    @Column
+    @CsvBindByPosition(position = 9)
     private String affiliation;
 }

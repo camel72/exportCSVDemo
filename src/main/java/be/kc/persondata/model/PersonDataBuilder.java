@@ -9,6 +9,8 @@ public class PersonDataBuilder {
     private LocalDate dateOfDeath;
     private String street;
     private String number;
+
+    private String box;
     private String city;
     private String ssin;
     private String affiliation;
@@ -43,6 +45,11 @@ public class PersonDataBuilder {
         return this;
     }
 
+    public PersonDataBuilder setBox(String box) {
+        this.box = box;
+        return this;
+    }
+
     public PersonDataBuilder setCity(String city) {
         this.city = city;
         return this;
@@ -59,6 +66,6 @@ public class PersonDataBuilder {
     }
 
     public PersonData createPersonData() {
-        return new PersonData(lastName, firstName, birthDate, dateOfDeath, street, number, city, ssin, affiliation);
+        return new PersonData(lastName, firstName, birthDate, dateOfDeath, street, number, box, city, ssin, affiliation);
     }
 }

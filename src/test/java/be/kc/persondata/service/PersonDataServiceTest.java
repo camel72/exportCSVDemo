@@ -3,6 +3,7 @@ package be.kc.persondata.service;
 import be.kc.persondata.controller.v1.model.PersonDataDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.progress.ThreadSafeMockingProgress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -18,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PersonDataServiceTest {
 
     private static final String PATH = "src/test/resources/export.csv";
+    private static final String PATH2 = "src/test/resources/export2.csv";
 
     @Autowired
     private PersonDataService personDataService;
@@ -30,8 +32,10 @@ public class PersonDataServiceTest {
     }
 
     @Test
-    public void findAllSortedByLastNameFirstNameAndCityTest() {
+    public void findAllSortedByLastNameFirstNameAndCityTest() throws InterruptedException {
+        Thread.sleep(1000l);
         List<PersonDataDTO> personDatas = personDataService.findAllSortedByLastNameFirstNameAndCity();
+
 
         PersonDataDTO personDataDTO = personDatas.get(6);
         assertNotNull(personDataDTO);
@@ -74,6 +78,10 @@ public class PersonDataServiceTest {
         assertTrue(personDataService.findAllSortedByLastNameFirstNameAndCity().isEmpty());
     }
 
+    void loadTest() throws Exception{
+        personDataService.loadFile(new File(PATH2));
+
+    }
 
     private PersonDataDTO getPersonDataDto() {
         return PersonDataDTO.builder()

@@ -18,6 +18,7 @@ public class PersonDataDTO {
     private LocalDate DateOfDeath;
     private String street;
     private String number;
+    private String box;
     private String city;
     private String ssin;
     private String affiliation;

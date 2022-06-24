@@ -31,6 +31,7 @@ class PersonDataRepositoryIntegrationTest {
                 .setBirthDate(LocalDate.of(2000, 1, 1))
                 .setStreet("testStreet1")
                 .setNumber("1")
+                .setBox("5a")
                 .setCity("testCity1")
                 .createPersonData();
 

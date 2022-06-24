@@ -10,7 +10,7 @@ services:
       - 3306:3306
     restart: always
     volumes:
-      - ./mysql-data:/var/lib/mysql
+      - /home/mysql-data:/var/lib/mysql
       - ./mysql-init-files:/docker-entrypoint-initdb.d
   myapp-main:
     build:

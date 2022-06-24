@@ -12,11 +12,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.StreamSupport;
 
 @Repository
 @Data
@@ -44,7 +44,7 @@ public class PersonDataCSVRepository {
         Instant start = null;
         try {
             start = Instant.now();
-            processCSVToPersonData(reader, csvToBeanPersonData);
+            processCSVToPersonData(csvToBeanPersonData);
         } finally {
             Instant finish = Instant.now();
             long timeElapsed = Duration.between(start, finish).toMinutes();
@@ -53,15 +53,18 @@ public class PersonDataCSVRepository {
         }
     }
 
-    private void processCSVToPersonData(Reader reader, CsvToBean<PersonData> csvToBean) throws IOException {
+    private void processCSVToPersonData(CsvToBean<PersonData> csvToBean) throws IOException {
         AtomicInteger counter = new AtomicInteger(0);
         logger.info("starting to process file export.csv");
 
-        Instant start = Instant.now();
-        StreamSupport.stream(csvToBean.spliterator(), true)
-                .forEach(personData -> {
-                    personDataRepository.save(personData);
-                    logger.info("record " + counter.getAndIncrement());
-                });
+        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        csvToBean.forEach(personData -> {
+            executor.execute(() -> savePersonData(counter, personData));
+        });
+    }
+
+    private void savePersonData(AtomicInteger counter, PersonData personData) {
+        personDataRepository.save(personData);
+        logger.info("record " + counter.getAndIncrement());
     }
 }
