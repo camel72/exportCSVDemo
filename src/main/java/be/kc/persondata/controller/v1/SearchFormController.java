@@ -1,14 +1,17 @@
 package be.kc.persondata.controller.v1;
 
 import be.kc.persondata.controller.v1.model.PersonDataDTO;
+import be.kc.persondata.dao.UserRepository;
 import be.kc.persondata.model.PersonData;
 import be.kc.persondata.model.PersonDataBuilder;
+import be.kc.persondata.model.User;
 import be.kc.persondata.service.PersonDataService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,37 +25,53 @@ public class SearchFormController {
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchFormController.class);
 
     @Value("${welcome.message}")
-    private String welcomMessage;
+    private String welcomeMessage;
 
-    @Autowired
-    private PersonDataService service;
+    private PersonDataService personDataService;
+
+    private UserRepository userRepository;
+
+    public SearchFormController(PersonDataService personDataService, UserRepository userRepository) {
+        this.personDataService = personDataService;
+        this.userRepository = userRepository;
+    }
 
 
     @RequestMapping("/searchForm")
-    public String searchForm(Model model) {
-        LOGGER.info("**********in searchForm *********");
-        model.addAttribute("message", welcomMessage);
-        model.addAttribute("personData", new PersonDataBuilder().createPersonData());
+    public String searchForm(Model model, @AuthenticationPrincipal OAuth2User principal) {
+        LOGGER.debug("**********in searchForm *********");
 
-        return "searchForm";
+        User user = getAuthenticatedUser(principal);
+        if (user != null) {
+            model.addAttribute("message", welcomeMessage + ": welcome " + user.getName());
+            model.addAttribute("personData", new PersonDataBuilder().createPersonData());
+
+            return "searchForm";
+        }
+
+        model.addAttribute("message", "You do not have permission to search.");
+        return "error";
     }
+
 
     @RequestMapping("/search")
     public String searchPersonData(@ModelAttribute PersonData personData, Model model) {
-        LOGGER.info("**********searchFrom: searchPersonData *********");
+        LOGGER.debug("**********searchFrom: searchPersonData *********");
+
+        // TODO refactor making use of Spring specification: https://spring.io/blog/2011/04/26/advanced-spring-data-jpa-specifications-and-querydsl/
         List<PersonDataDTO> personDataDTOList = null;
         if (isFindAll().test(personData)) {
-            personDataDTOList = service.findAllSortedByLastNameFirstNameAndCity();
+            personDataDTOList = personDataService.findAllSortedByLastNameFirstNameAndCity();
         } else if (isFindByStreetAndCity().test(personData)) {
-            personDataDTOList = service.findByStreetAndCity(personData.getStreet(), personData.getCity());
+            personDataDTOList = personDataService.findByStreetAndCity(personData.getStreet(), personData.getCity());
         } else if (isFindByLastName().test(personData)) {
-            personDataDTOList = service.findByLastName(personData.getLastName());
+            personDataDTOList = personDataService.findByLastName(personData.getLastName());
         } else if (isFindByLastAndFirstName().test(personData)) {
-            personDataDTOList = service.findByLastNameAndFirstName(personData.getLastName(), personData.getFirstName());
+            personDataDTOList = personDataService.findByLastNameAndFirstName(personData.getLastName(), personData.getFirstName());
         } else if (isFindByStreetAndNumber().test(personData)) {
-            personDataDTOList = service.findByStreetAndNumberAndCity(personData.getStreet(), personData.getNumber(), personData.getCity());
+            personDataDTOList = personDataService.findByStreetAndNumberAndCity(personData.getStreet(), personData.getNumber(), personData.getCity());
         } else if (isFindByStreet().test(personData)) {
-            personDataDTOList = service.findByStreet(personData.getStreet());
+            personDataDTOList = personDataService.findByStreet(personData.getStreet());
         }
 
         if (personDataDTOList != null) {
@@ -100,5 +119,12 @@ public class SearchFormController {
 
     private Predicate<PersonData> isFindByStreet() {
         return personData -> StringUtils.isNotBlank(personData.getStreet());
+    }
+
+    private User getAuthenticatedUser(OAuth2User principal) {
+        return userRepository.findByNameAndEmail(
+                principal.getAttribute("name"),
+                principal.getAttribute("email")
+        );
     }
 }

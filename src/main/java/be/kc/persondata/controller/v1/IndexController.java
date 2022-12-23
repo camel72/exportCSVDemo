@@ -1,5 +1,7 @@
 package be.kc.persondata.controller.v1;
 
+import be.kc.persondata.dao.UserRepository;
+import be.kc.persondata.model.User;
 import be.kc.persondata.service.FileStorageService;
 import be.kc.persondata.service.PersonDataService;
 import org.slf4j.Logger;
@@ -8,9 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -38,19 +38,29 @@ public class IndexController {
 
     private FileStorageService fileStorageService;
 
+    private UserRepository userRepository;
 
-    public IndexController(PersonDataService personDataService, FileStorageService fileStorageService) {
+
+    public IndexController(PersonDataService personDataService, FileStorageService fileStorageService, UserRepository userRepository) {
         this.personDataService = personDataService;
         this.fileStorageService = fileStorageService;
+        this.userRepository = userRepository;
     }
 
 
-    @RequestMapping({"", "/", "index", "index.html"})
+    @GetMapping({"/", "index", "index.html"})
     public String index(Model model) throws Exception {
         if (env.equals("test")) {
-            LOGGER.info("**********IndexController: loading file *********");
+            LOGGER.info("**********IndexController: loading file from test env *********");
+
             personDataService.deleteAll();
+            userRepository.deleteAll();
+
             personDataService.loadFile(new File(path));
+
+            User user = createValidUser();
+
+            userRepository.save(user);
         }
         LOGGER.info("**********IndexController:" + welcomeMessage + "*********");
         model.addAttribute("message", welcomeMessage);
@@ -58,7 +68,7 @@ public class IndexController {
         return "index";
     }
 
-    @RequestMapping("/delete")
+    @GetMapping("/delete")
     public String delete(RedirectAttributes attributes) {
         LOGGER.info("**********IndexController: delete*********");
 
@@ -87,5 +97,12 @@ public class IndexController {
                 String.format("You successfully uploaded file %s !", uploadedFile.getName()));
 
         return "redirect:/";
+    }
+
+    private static User createValidUser() {
+        User user = new User();
+        user.setName("Kristof Camelbeke");
+        user.setEmail("kristof.camelbeke@gmail.com");
+        return user;
     }
 }
